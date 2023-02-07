@@ -11,18 +11,37 @@ import com.github.ricksbrown.cowsay.Cowsay;
 @Path("/cowsay")
 public class MyCow {
 
+    /**
+     * PATH /cowsay
+     */
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String cowsay() {
-        String[] args = new String[] { "-f", "daemon",
-                "Hoho ! \n\n Give a './message' to the cow please ! \n\n Thank you" };
-        return Cowsay.say(args);
+        // Use the little class next to this one
+        return MakeCowSay.cowsay("Give a message to the cow !");
     }
 
+    /**
+     * PATH /cowsay/mon message
+     */
     @GET
     @Path("{msg}")
-    public String loginPath(@PathParam("msg") String txt) {
-        String[] args = new String[] { "-f", "cow", txt };
+    public String cowsay(@PathParam("msg") String txt) {
+        // Use the little class next to this one
+        return MakeCowSay.cowsay(txt);
+    }
+
+    /**
+     * PATH /cowsay/otherCow
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("otherCow")
+    public String otherCowsay() {
+        // Use the external lib 'com.github.ricksbrown.cowsay.Cowsay'
+        // Is ok when compiled in JVM but ko in native
+        String[] args = new String[] { "-f", "cow",
+                "Hoho ! \n\n I am an happy cow. Give me fresh grass please !" };
         return Cowsay.say(args);
     }
 
